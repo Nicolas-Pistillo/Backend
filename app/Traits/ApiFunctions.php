@@ -22,13 +22,13 @@ trait ApiFunctions
      * @param string $reason El motivo del error
      * @param string $message Un mensaje descriptivo o ayuda para resolver el error
      */
-    public function error(string $reason, string $message)
+    public function error(string $reason, string $message, int $codeStatus = 401)
     {
         return response()->json([
             'success'   => false,
             'time'      => time(),
             'reason'    => $reason,
             'message'   => $message
-        ]);
+        ], $codeStatus);
     }
 }

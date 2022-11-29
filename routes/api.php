@@ -8,4 +8,6 @@ Route::controller(ApiController::class)->group(function () {
 
     Route::get('test', 'test');
 
+    Route::post('login', 'login');
+
 });

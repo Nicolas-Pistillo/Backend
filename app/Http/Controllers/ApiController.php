@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\ApiFunctions;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Traits\BasicApiFunctions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
-    use ApiFunctions;
+    use BasicApiFunctions;
 
     public function __construct()
     {
+        /**
+         * Todos los endpoint de la API estan protegidos por autenticación JWT,
+         * excepto para los mètodos de Login, Register y el endpoint de test
+         */
         $this->middleware('auth:api', ['except' => ['login', 'register', 'test']]);
     }
 
@@ -23,21 +32,17 @@ class ApiController extends Controller
         return $this->success("La API funcionando está, mi joven {$request->ip()}");
     }
 
-    public function login(Request $request)
+    /**
+     * Inicio de sesión basado en correo y contraseña del usuario
+     */
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email'     => 'required|string|email',
-            'password'  => 'required|string',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        $token = Auth::attempt($credentials);
+        $token = Auth::attempt($request->validated());
 
         if (!$token)
         {
-            return $this->error('Credenciales incorrectas', 
-                "Tus ojos pueden engañarte, no confíes en ellos. | Atte: Obi-Wan."
+            return $this->error('Usuario inexistente, revise sus credenciales', 
+                "Tus ojos pueden engañarte, no confíes en ellos. Atte: Obi-Wan"
             );
         } 
 
@@ -46,7 +51,30 @@ class ApiController extends Controller
             'user'    => Auth::user(),
             'authorization' => [
                 'token' => $token,
-                'type' => 'bearer'
+                'type'  => 'bearer'
+            ]
+        ]);
+    }
+
+    /**
+     * Registro de usuario
+     */
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password),
+        ]);
+
+        $token = Auth::login($user);
+
+        return $this->success([
+            'message' => "¡Bienvenido a bordo, $user->name!. Aquí tienes tu token",
+            'user'    => $user,
+            'authorization' => [
+                'token' => $token,
+                'type'  => 'bearer'
             ]
         ]);
     }

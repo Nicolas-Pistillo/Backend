@@ -2,7 +2,10 @@
 
 namespace App\Traits;
 
-trait ApiFunctions
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+trait BasicApiFunctions
 {
     /**
      * Retorna una respuesta de API axitosa
@@ -20,15 +23,16 @@ trait ApiFunctions
     /**
      * Retorna una respuesta de error en la API
      * @param string $reason El motivo del error
-     * @param string $message Un mensaje descriptivo o ayuda para resolver el error
+     * @param string $data Un mensaje descriptivo o ayuda para resolver el error
+     * @param int $codeStatus El código de estado que se enviara al cliente 
      */
-    public function error(string $reason, string $message, int $codeStatus = 401)
+    public function error(string $reason, $data, int $codeStatus = 401)
     {
         return response()->json([
-            'success'   => false,
-            'time'      => time(),
-            'reason'    => $reason,
-            'message'   => $message
+            'success'       => false,
+            'time'          => time(),
+            'reason'        => $reason,
+            'description'   => $data
         ], $codeStatus);
     }
 }

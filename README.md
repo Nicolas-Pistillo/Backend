@@ -9,7 +9,7 @@ Con el fin de simplificar un poco los comandos para inicializar el proyecto y tr
 
 ## Configuraciones iniciales
 
-Todas estas configuraciónes estan pensadas para ser ejecutadas dentro de una sesión de terminal WSL. En mi caso use una distribución **Debian** para interactuar con el entorno de la aplicación.
+Los siguientes comandos deberian ser ejecutados dentro de una sesión de terminal WSL. En mi caso use una distribución **Debian** para interactuar con el entorno de la aplicación.
 
 Una vez clonado el repositorio en la máquina local, procedemos a realizar las siguientes configuraciones:
 

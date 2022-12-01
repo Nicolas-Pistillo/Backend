@@ -29,9 +29,9 @@ class ApiController extends Controller
     /**
      * Prueba simple de funcionamiento
      */
-    public function test(Request $request)
+    public function test()
     {
-        return $this->success("La API funcionando está, mi joven {$request->ip()}");
+        return $this->success("La API funcionando está, mi joven padawan");
     }
 
     /**

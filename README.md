@@ -31,7 +31,7 @@ Una vez clonado el repositorio en la máquina local, procedemos a realizar las s
 
 ## Base de datos
 
-En este caso utilicé una BBDD Mysql tradicional para la persistencia de datos. Adicionalmente creé un usuario de prueba en los seeders de la aplicación para probar la API sin recurrir el endpoint de registro de usuario. Se pueden correr las migraciones con este comando:
+En este caso utilicé una BBDD Mysql tradicional para la persistencia de datos. Adicionalmente creé un usuario de prueba en los seeders de la aplicación para probar la API sin recurrir al endpoint de registro de usuario. Se pueden correr las migraciones con los seeders (este último opcional) con este comando:
 
     sail artisan migrate --seed
 

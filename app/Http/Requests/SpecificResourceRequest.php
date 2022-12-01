@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class FiltrableResourceRequest extends FormRequest
+/**
+ * Validación de un recurso especifico basado en su ID 
+ */
+class SpecificResourceRequest extends FormRequest
 {
     use BasicApiFunctions;
 
@@ -22,6 +25,12 @@ class FiltrableResourceRequest extends FormRequest
         return Auth::check();
     }
 
+    // El ID llega como parámetro de ruta a la validación
+    protected function prepareForValidation() 
+    {
+        $this->merge(['id' => $this->route('id')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,17 +38,19 @@ class FiltrableResourceRequest extends FormRequest
      */
     public function rules()
     {
-        // Se validan los filtros opcionales para los recursos de la API
         return [
-            'limit'  => 'nullable|numeric|max:10',
-            'offset' => 'nullable|numeric|max:10'
+            'id' => 'required|numeric|integer|min:1'
         ];
     }
 
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
-            $this->error('Error al validar los filtros', $validator->errors(), 400)
+            $this->error(
+                'ID inválido', 
+                'Si recurso tu quieres, ID numérico y entero enviar debes', 
+                400
+            )
         );
     }
 }

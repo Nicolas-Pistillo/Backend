@@ -13,6 +13,14 @@ Route::controller(ApiController::class)->group(function () {
 
     Route::get('people/all', 'getAllPeople');
 
-    Route::get('people/byId/{id}', 'getOnePeople');
+    Route::get('planets/all', 'getAllPlanets');
+
+    Route::get('vehicles/all', 'getAllVehicles');
+
+    Route::get('people/{id}', 'getPeopleById');
+
+    Route::get('planets/{id}', 'getPlanetById');
+
+    Route::get('vehicles/{id}', 'getVehicleById');
 
 });

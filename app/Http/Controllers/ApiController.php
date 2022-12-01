@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Swapi;
 use App\Http\Requests\FiltrableResourceRequest;
+use App\Http\Requests\SpecificResourceRequest;
 
 class ApiController extends Controller
 {
@@ -82,17 +83,75 @@ class ApiController extends Controller
         ]);
     }
 
+    // **********  RECURSOS DE LA API  **********
+
     /**
      * Retorna todos los recursos de personas
      */
     public function getAllPeople(FiltrableResourceRequest $request)
     {
         $data = Swapi::getAllPeople($request->limit, $request->offset);
+        return $this->success(compact('data'));
+    }
 
-        return $this->success([
-            'data' => $data,
-            'tokenExpiration' => $request->tokenExpiration
-        ]);
+    /**
+     * Retorna todos los recursos de planetas
+     */
+    public function getAllPlanets(FiltrableResourceRequest $request)
+    {
+        $data = Swapi::getAllPlanets($request->limit, $request->offset);
+        return $this->success(compact('data'));
+    }
+
+    /**
+     * Retorna todos los recursos de vehiculos
+     */
+    public function getAllVehicles(FiltrableResourceRequest $request)
+    {
+        $data = Swapi::getAllVehicles($request->limit, $request->offset);
+        return $this->success(compact('data'));
+    }
+
+    /**
+     * Retorna un recurso de person por su ID
+     */
+    public function getPeopleById(SpecificResourceRequest $request)
+    {
+        $person = Swapi::getPeopleById($request->id);
+
+        if (!$person) return $this->error('Personaje no encontrado', 
+            'Es posible que no exista un recurso con el ID envíado', 404
+        );
+
+        return $this->success(['data' => $person]);
+    }
+
+    /**
+     * Retorna un recurso de planeta por su ID
+     */
+    public function getPlanetById(SpecificResourceRequest $request)
+    {
+        $planet = Swapi::getPlanetById($request->id);
+
+        if (!$planet) return $this->error('Planeta no encontrado', 
+            'Es posible que no exista un recurso con el ID envíado', 404
+        );
+
+        return $this->success(['data' => $planet]);
+    }
+
+    /**
+     * Retorna un recurso de vehiculo por su ID
+     */
+    public function getVehicleById(SpecificResourceRequest $request)
+    {
+        $vehicle = Swapi::getVehicleById($request->id);
+
+        if (!$vehicle) return $this->error('Vehiculo no encontrado', 
+            'Es posible que no exista un recurso con el ID envíado', 404
+        );
+
+        return $this->success(['data' => $vehicle]);
     }
 
 }

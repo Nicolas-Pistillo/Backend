@@ -13,11 +13,18 @@ trait BasicApiFunctions
      */
     public function success($data = [])
     {
-        return response()->json([
+        $response = [
             'success'   => true,
             'time'      => time(),
             'response'  => $data,
-        ]);
+        ];
+
+        if (request()->has('tokenExpiration'))
+        {
+            $response['tokenExpiration'] = request('tokenExpiration');
+        }
+
+        return response()->json($response);
     }
 
     /**
@@ -28,11 +35,18 @@ trait BasicApiFunctions
      */
     public function error(string $reason, $data, int $codeStatus = 401)
     {
-        return response()->json([
+        $response = [
             'success'       => false,
             'time'          => time(),
             'reason'        => $reason,
             'description'   => $data
-        ], $codeStatus);
+        ];
+
+        if (request()->has('tokenExpiration'))
+        {
+            $response['tokenExpiration'] = request('tokenExpiration');
+        }
+
+        return response()->json($response, $codeStatus);
     }
 }

@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Classes\Swapi;
+use App\Http\Requests\FiltrableResourceRequest;
 
 class ApiController extends Controller
 {
@@ -19,9 +20,9 @@ class ApiController extends Controller
     {
         /**
          * Todos los endpoint de la API estan protegidos por autenticación JWT,
-         * excepto para los mètodos de Login, Register y el endpoint de test
+         * excepto para los mètodos de Login, Register y el endpoint de Test
          */
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'test']]);
+        $this->middleware('jwt_token', ['except' => ['login', 'register', 'test']]);
     }
 
     /**
@@ -46,9 +47,11 @@ class ApiController extends Controller
             );
         } 
 
+        $user = Auth::user();
+
         return $this->success([
-            'message' => "Toma este token, y úsalo con sabiduría.",
-            'user'    => Auth::user(),
+            'message' => "Toma este token, $user->name, y úsalo con sabiduría.",
+            'user'    => $user,
             'authorization' => [
                 'token' => $token,
                 'type'  => 'bearer'
@@ -76,6 +79,19 @@ class ApiController extends Controller
                 'token' => $token,
                 'type'  => 'bearer'
             ]
+        ]);
+    }
+
+    /**
+     * Retorna todos los recursos de personas
+     */
+    public function getAllPeople(FiltrableResourceRequest $request)
+    {
+        $data = Swapi::getAllPeople($request->limit, $request->offset);
+
+        return $this->success([
+            'data' => $data,
+            'tokenExpiration' => $request->tokenExpiration
         ]);
     }
 

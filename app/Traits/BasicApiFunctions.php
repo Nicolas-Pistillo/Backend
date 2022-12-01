@@ -16,7 +16,7 @@ trait BasicApiFunctions
         return response()->json([
             'success'   => true,
             'time'      => time(),
-            'data'      => $data,
+            'response'  => $data,
         ]);
     }
 

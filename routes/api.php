@@ -11,4 +11,8 @@ Route::controller(ApiController::class)->group(function () {
 
     Route::post('register', 'register');
 
+    Route::get('people/all', 'getAllPeople');
+
+    Route::get('people/byId/{id}', 'getOnePeople');
+
 });

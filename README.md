@@ -37,7 +37,7 @@ En este caso utilicé una BBDD Mysql tradicional para la persistencia de datos. 
 
 ## Tests Funcionales
 
-El proyecto cuenta con 2 test funcionales sencillos para comprobar el correcto funcionamiento de la API, los cuales incluyen una comprobación del estado del servicio, una prueba de registro de usuario y una petición autenticada hacia un recurso de la API enviada con ese mismo usuario generado en el test (algo asi como hacer un trámite en la ANSES 😂).
+El proyecto cuenta con 2 test funcionales sencillos para comprobar el correcto funcionamiento de la API, los cuales incluyen una comprobación del estado del servicio, una prueba de registro de usuario y una petición autenticada hacia un recurso de la API enviada con ese mismo usuario generado en el test (algo asi como hacer un trámite en la ANSES).
 
     sail artisan test
 
